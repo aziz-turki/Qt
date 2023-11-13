@@ -1,0 +1,12 @@
+void MainWindow::on_camera_pt_clicked()
+{
+    Widget w ;
+    w.setModal(true);
+    w.exec();
+
+
+}
+
+
+
+QT += multimedia multimediawidgets

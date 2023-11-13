@@ -1,0 +1,11 @@
+Rech
+Tri
+Stat
+PDF
+Excel
+Camera
+Historique
+Qrcode
+Notification
+login
+imprimer

@@ -1,0 +1,49 @@
+ public void GeneratePDF(){
+              EvenementService es=new EvenementService();
+              Evenement e=new Evenement();
+                List<Evenement> events = new ArrayList<>();
+                events=es.FetchEvents();
+                 Font bfBold12 = new Font(FontFamily.HELVETICA, 12, Font.BOLD, new BaseColor(168, 19, 19)); 
+
+              try{
+                  String file_name="C:\\Users\\WIKI\\Desktop\\PI\\desktop\\src\\EventsList.pdf";
+                  Document document=new Document();
+                  PdfWriter.getInstance(document,new FileOutputStream(file_name));
+                  document.open();
+                  Paragraph para=new Paragraph("List of events:");
+                  document.add(para);
+                  document.add(new Paragraph(" "));
+                  document.add(new Paragraph(" "));
+              PdfPTable table= new PdfPTable(4);
+               table.setWidthPercentage(90f);
+              /*PdfPCell c1=new PdfPCell(new Phrase("Event name"));
+              table.addCell(c1);
+               PdfPCell c2=new PdfPCell(new Phrase("Event place"));
+              table.addCell(c2);
+              
+               PdfPCell c3=new PdfPCell(new Phrase("Begins at"));
+              table.addCell(c3);
+               PdfPCell c4=new PdfPCell(new Phrase("Ends at"));
+              table.addCell(c4);*/
+               insertCell(table, "Event name", Element.ALIGN_LEFT, 1, bfBold12);
+               insertCell(table, "Event place", Element.ALIGN_LEFT, 1, bfBold12);
+               insertCell(table, "Begins at", Element.ALIGN_LEFT, 1, bfBold12);
+               insertCell(table, "Ends at", Element.ALIGN_LEFT, 1, bfBold12);
+              table.setHeaderRows(1);
+              for(int i=0;i<events.size();i++){
+                  table.addCell(events.get(i).getNameEvent());
+                  table.addCell(events.get(i).getPlaceEvent());
+                  table.addCell(events.get(i).getDateDebut());
+                  table.addCell(events.get(i).getDateFin());
+              }
+
+              document.add(table);
+              //generate image in the pdf
+              document.add(Image.getInstance("C:\\Users\\WIKI\\Desktop\\PI\\desktop\\src\\logo.png"));
+
+              document.close();
+              System.out.println("pdf of list events is done");
+              }catch (Exception ex){
+                  System.err.println("pdf error"+ex);
+
+              }

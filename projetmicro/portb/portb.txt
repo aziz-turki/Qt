@@ -1,0 +1,91 @@
+sbit LCD_RS at RC4_bit;
+ sbit LCD_EN at RC5_bit;
+ sbit LCD_D7 at RC3_bit;
+ sbit LCD_D6 at RC2_bit;
+ sbit LCD_D5 at RC1_bit;
+ sbit LCD_D4 at RC0_bit;
+
+sbit LCD_RS_Direction at TRISC4_bit;
+sbit LCD_EN_Direction at TRISC5_bit;
+sbit LCD_D7_Direction at TRISC3_bit;
+sbit LCD_D6_Direction at TRISC2_bit;
+sbit LCD_D5_Direction at TRISC1_bit;
+sbit LCD_D4_Direction at TRISC0_bit;
+
+void alerte(){
+ int i;
+ for(i=0;i<3;i++){
+      portd.rd0=1;
+      delay_ms(1000);
+      porta.ra1=1;
+      delay_ms(500);
+      porta.ra1=0;
+      delay_ms(500);
+   }
+   portd.rd0=0;
+}
+void interrupt(){
+if(INTCON.RBIF=1) {
+    if(PORTB.RB4==1)
+{ PORTC.RC0=1;
+delay_ms(200);
+PORTC.RC1=0;
+PORTC.RC0=0;
+
+}else if(PORTB.RB5==1)
+{
+PORTC.RC1=1;
+delay_ms(200);
+PORTC.RC0=0;
+PORTC.RC1=0;
+}
+
+  INTCON.RBIF=0;
+ }
+}
+
+
+void main() {
+     trisa.ra0=0;
+     trisa.ra1=0;
+     trisa.ra2=0;
+     trisd.rd0=0;
+     trisb.rb0=1;
+     TRISB.RB5=1;
+TRISB.RB4=1;
+TRISC=0;
+INTCON.RBIE=1;
+INTCON.GIE=1;
+PORTC=0;
+
+     intcon.gie=1;
+     intcon.inte=1;
+     option_reg.INTEDG=1;
+
+
+     porta.ra0=0;
+     porta.ra1=0;
+     porta.ra2=0;
+     portd.rd0=0;
+
+     LCD_init();
+     Lcd_Cmd(_LCD_CLEAR);
+     lcd_cmd(_lcd_return_home);
+     lcd_cmd(_LCD_CURSOR_OFF);
+     Lcd_Out(1,3, "Yacine");
+     Lcd_Out(2,1,"Have a good time");
+
+     do{
+        int i;
+        if(portb.rb0==1)
+        {
+          alerte();
+          portd.rd0=0;
+        }
+     }while(1);
+
+
+
+
+
+}

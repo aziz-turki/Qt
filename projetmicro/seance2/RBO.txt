@@ -1,0 +1,57 @@
+sbit LCD_RS at RD4_bit;
+sbit LCD_EN at RD5_bit;
+sbit LCD_D7 at RD3_bit;
+sbit LCD_D6 at RD2_bit;
+sbit LCD_D5 at RD1_bit;
+sbit LCD_D4 at RD0_bit;
+
+// Pin direction
+sbit LCD_RS_Direction at TRISD4_bit;
+sbit LCD_EN_Direction at TRISD5_bit;
+sbit LCD_D7_Direction at TRISD3_bit;
+sbit LCD_D6_Direction at TRISD2_bit;
+sbit LCD_D5_Direction at TRISD1_bit;
+sbit LCD_D4_Direction at TRISD0_bit;
+
+int i;
+void main() {
+
+//configuration
+TRISD=0;
+TRISA = 0;
+TRISB=0b00000001;
+TRISC=0b00000100;
+INTCON.RBIE=1;
+INTCON.GIE=1;
+INTCON.INTE=1;
+OPTION_REG.INTEDG=1 ;
+
+//initialisation
+PORTA=0;
+PORTD=0;
+
+//traitement
+   Lcd_Init();
+   Delay_ms(1000);
+   Lcd_Out(1, 1, "Omar");
+   Lcd_Out(2, 1, "have a good time");
+   Lcd_Cmd(_LCD_CURSOR_OFF);
+}
+
+
+void interrupt() {
+if (INTCON.INTF == 1){
+PORTA.RA1=1;
+  //if(PORTB.RB4 == 1){
+  for(i=0;i<3;i++){
+   PORTA.RA2 = 1 ;
+   delay_ms(500);
+   PORTA.RA2 = 0;
+   delay_ms(500);
+     }
+  PORTA.RA1=0;
+   INTCON.INTF=0;
+   }
+
+   }
+   
